@@ -1,0 +1,89 @@
+/* Fondo con gradiente que cubre toda la pantalla sin repetición */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #3e3ac7, #b5b4db);
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #ffffff;
+}
+
+/* Centrar el contenido de la página vertical y horizontalmente */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+}
+
+/* Título principal con sombra para mejor legibilidad */
+.titulo {
+    font-size: 3rem;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+}
+
+/* Subtítulo */
+.subtituloOpciones {
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+}
+
+/* Container de opciones con fondo semitransparente y bordes redondeados */
+.containerOpcionesJuego {
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 90%;
+    max-width: 400px;
+}
+
+/* Estilo común para botones */
+button {
+    background: #5a4af3;
+    color: white;
+    border: none;
+    padding: 15px 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(90, 74, 243, 0.5);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover y focus para botones */
+button:hover{
+    background: #4436d7;
+    outline: none;
+    transform: translateY(-3px);
+}
+
+/* Responsive text sizing */
+@media (max-width: 480px) {
+    .titulo {
+        font-size: 2.2rem;
+        margin-bottom: 25px;
+    }
+    .subtituloOpciones {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+    .containerOpcionesJuego {
+        padding: 20px 25px;
+        width: 95%;
+    }
+    button {
+        font-size: 1rem;
+        padding: 12px 0;
+    }
+}
