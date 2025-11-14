@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Gestión de Categorías</title>
+        <meta charset="UTF-8"/>
+        
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .error { color: red; }
+        table { border-collapse: collapse; width: 50%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f2f2f2; }
+        input[type="text"] { width: 300px; padding: 5px; }
+        input[type="submit"] { padding: 5px 10px; }
+    </style>
+    
+    </head>
+    <body>
+        <h2>Crear nueva Categoría</h2>
+        <form th:action="@{/categorias/crear}" method="post" th:object="${categoria}">
+        <input type="text" th:field="*{nombre}" placeholder="Nombre de la categoría" required/>
+        <input type="submit" value="Crear"/>
+    </form>
+        
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+        
+        <h2>Categorías activas disponibles para el juego</h2>
+
+        <table>
+        <thead>
+            <tr>
+             <th>ID</th>
+             <th>Nombre</th>
+            <th>Activa</th>
+            </tr>
+        </thead>
+        <tbody>    
+            <tr th:each="cat : ${categorias}">
+            <td th:text="${cat.id}">1</td>
+            <td th:text="${cat.nombre}">Nombre categoría</td>
+            <td th:text="${cat.activa}">true</td>
+            </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
