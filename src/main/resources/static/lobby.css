@@ -1,0 +1,62 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 16 nov 2025, 17:01:57
+    Author     : 59898
+*/
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #0d0d0d, #3a3a3a);
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #ffffff;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
+    text-align: center;
+}
+
+.divLobby {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 90%;
+    max-width: 700px;
+    height: auto;
+    min-height: 57
+        0px;
+    
+}
+
+.titulo {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+}
+
+/* Media Query para móviles */
+@media (max-width: 600px) {
+    .divLobby {
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .titulo {
+        font-size: 2rem;
+    }
+}
