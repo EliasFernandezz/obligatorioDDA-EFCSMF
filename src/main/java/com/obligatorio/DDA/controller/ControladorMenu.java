@@ -20,7 +20,7 @@ public class ControladorMenu {
         return "menu";
     }
     
-    @GetMapping("/lobby")
+    @GetMapping("/lobby/menu")
     public String mostrarLobby(){
     
         return "lobby"; 

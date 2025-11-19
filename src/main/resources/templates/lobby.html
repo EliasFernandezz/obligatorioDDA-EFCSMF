@@ -13,6 +13,17 @@
         <h1 class="titulo">Lobby</h1>
         <div class="divLobby">
             <h2>Configuraciones de partida:</h2>
+            <div class="categoriasSeleccionadas">
+                <h3 class="subTituloCategoriasSeleccionadas">Categorías seleccionadas</h3>
+
+                <ul class="listaCategorias">
+                    <li th:each="categoria : ${categorias}">
+                        <span th:text="${categoria.nombre}"></span>
+                    </li>
+                </ul>
+            </div>
+
+            
         </div>
     </body>
 </html>

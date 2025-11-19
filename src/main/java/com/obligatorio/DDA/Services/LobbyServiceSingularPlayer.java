@@ -28,17 +28,6 @@ public class LobbyServiceSingularPlayer {
         
     }
     
-    public void agregarCategoria(Lobby lobby, Categoria categoria){
-    
-        lobby.getCategoriasSeleccionadas().add(categoria);
-    }
-    
-     public void eliminarCategoria(Lobby lobby, Categoria categoria){
-    
-        lobby.getCategoriasSeleccionadas().remove(categoria);
-    }
-    
-    
     public void modificarCantRondas(Lobby lobby, int cantRondas){
     
         lobby.setCantRondas(cantRondas);

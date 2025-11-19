@@ -31,7 +31,7 @@ public class ServidorService {
     }
 
     public List<Categoria> obtenerCategoriasPredeterminadas() {
-        return categoriaRepository.findByEstadoCategoriaTrue();
+        return categoriaRepository.findAll();
     }
 
     public Lobby crearLobby(Lobby lobby) {
