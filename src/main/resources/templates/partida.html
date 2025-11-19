@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <html>
+        <head>
+            <link rel="stylesheet" th:href="@{/partida.css}" type="text/css"/>
+
+            <title>TODO supply a title</title>
+            <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    </head>
+                    <body>
+                        <div class="top-stats">
+                            <div class="round-counter">Ronda: 1 de 3</div>
+                            <div class="timer">00:45</div>
+                        </div>
+
+                        <h1 class="titulo">Ingresa palabras con la letra <span class="letra">A</span></h1>
+
+                        <div class="contenedor">
+                            <form class="formulario">
+
+                                <div class="grupo">
+                                    <label>Mundi</label>
+                                    <input type="text" name="mundi">
+                                </div>
+
+                                <div class="grupo">
+                                    <label>Música</label>
+                                    <input type="text" name="musica">
+                                </div>
+
+                                <div class="grupo">
+                                    <label>Auto</label>
+                                    <input type="text" name="auto">
+                                </div>
+
+                                <div class="grupo">
+                                    <label>Famoso</label>
+                                    <input type="text" name="famoso">
+                                </div>
+
+                                <div class="botones">
+                                    <button type="submit" class="btn rendirse">Rendirse</button>
+                                    <button type="submit" class="btn tutti" disabled>Tutti Frutti</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </body>
+                    </html>
