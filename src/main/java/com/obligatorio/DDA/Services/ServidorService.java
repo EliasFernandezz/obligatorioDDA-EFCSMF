@@ -33,6 +33,14 @@ public class ServidorService {
     public List<Categoria> obtenerCategoriasPredeterminadas() {
         return categoriaRepository.findAll();
     }
+    
+    public List<Categoria> obtenerCategoriasActivas() {
+        return categoriaRepository.findByEstadoCategoriaTrue();
+    }
+
+    public List<Categoria> obtenerCategoriasDesactivadas() {
+        return categoriaRepository.findByEstadoCategoriaFalse();
+    }
 
     public Lobby crearLobby(Lobby lobby) {
         List<Categoria> categoriasPorDefecto = obtenerCategoriasPredeterminadas();

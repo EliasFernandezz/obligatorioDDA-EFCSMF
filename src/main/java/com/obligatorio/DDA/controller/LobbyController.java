@@ -40,10 +40,15 @@ public class LobbyController {
     public String mostrarCategoriasLobby(Model model) {
 
         // Obtener categorías activas y desactivadas tambien
-        List<Categoria> categorias = servidorService.obtenerCategoriasPredeterminadas();
+        List<Categoria> activas = servidorService.obtenerCategoriasActivas();
+        List<Categoria> desactivadas = servidorService.obtenerCategoriasDesactivadas();
 
         // Pasarlas a la vista
-        model.addAttribute("categorias", categorias);
+        model.addAttribute("activas", activas);
+        model.addAttribute("desactivadas", desactivadas); 
+        
+      
+
 
         return "lobby"; 
     }

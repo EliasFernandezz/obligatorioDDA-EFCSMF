@@ -13,17 +13,27 @@
         <h1 class="titulo">Lobby</h1>
         <div class="divLobby">
             <h2>Configuraciones de partida:</h2>
-            <div class="categoriasSeleccionadas">
-                <h3 class="subTituloCategoriasSeleccionadas">Categorías seleccionadas</h3>
+            <div class="contenedorCategorias">
 
-                <ul class="listaCategorias">
-                    <li th:each="categoria : ${categorias}">
-                        <span th:text="${categoria.nombre}"></span>
-                    </li>
-                </ul>
+                <div class="categoriasSeleccionadas">
+                    <h3 class="subTituloCategoriasSeleccionadas">Categorías seleccionadas</h3>
+                    <ul class="listaCategoriasActivas">
+                        <li th:each="categoria : ${activas}">
+                            <span th:text="${categoria.nombre}"></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="categoriasNoSeleccionadas">
+                    <h3 class="subTituloCategoriasSeleccionadas">Categorías no seleccionadas</h3>
+                    <ul class="listaCategoriasNoActivas">
+                        <li th:each="categoria : ${desactivadas}">
+                            <span th:text="${categoria.nombre}"></span>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
-            
         </div>
     </body>
 </html>

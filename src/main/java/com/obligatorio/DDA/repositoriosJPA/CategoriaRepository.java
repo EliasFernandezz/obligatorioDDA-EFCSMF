@@ -18,5 +18,6 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {
    
 
     List<Categoria> findByEstadoCategoriaTrue();
+    List<Categoria> findByEstadoCategoriaFalse();
 
 }
