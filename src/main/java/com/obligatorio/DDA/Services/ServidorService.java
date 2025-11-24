@@ -23,7 +23,7 @@ public class ServidorService {
     private List<Lobby> lobbys = new ArrayList<>();
     
     private final CategoriaRepository categoriaRepository;
-    
+    private Lobby lobbySingularPlayer; 
 
     @Autowired
     public ServidorService(CategoriaRepository categoriaRepository) {
@@ -49,12 +49,7 @@ public class ServidorService {
         return lobby;
     }
 
-    public Lobby buscarLobby(int id) {
-        return lobbys.stream()
-                .filter(lobby -> lobby.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Lobby no encontrado"));
-    }
+   
 
     public void eliminarLobby(int id) {
         lobbys.removeIf(lobby -> lobby.getId() == id);
@@ -64,5 +59,28 @@ public class ServidorService {
         String letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         return letras.charAt((int)(Math.random() * letras.length()));
     }
+
+    public Lobby buscarLobbyUnicoLocalParaSingularPlayer() {
+      if(lobbySingularPlayer == null){
+        
+            lobbySingularPlayer = new Lobby(); 
+            lobbySingularPlayer.setCategoriasSeleccionadas(obtenerCategoriasPredeterminadas());
+            
+        }
+        
+        return lobbySingularPlayer; 
+    }
+    
+    // se mantiene un lobby estatico para un jugadorsolo ya que jugara localmente en su maquina y no se necesita buscar mas de un lobby como en caso de
+    // multijugador para diferenciar cada lobby a quien pertenece y que configuracion tiene el mismo sinmezclar un lobby con otro sabiendo que jugadores tiene cada lobby. 
+    
+    
+    public Lobby buscarLobbyMultiplayer(int id) {
+        return lobbys.stream()
+                .filter(lobby -> lobby.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Lobby no encontrado"));
+    }
+    
     
 }

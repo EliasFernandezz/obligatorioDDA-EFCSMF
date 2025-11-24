@@ -44,7 +44,10 @@ public class LobbyController {
 
     @GetMapping
     public String mostrarCategoriasLobby(Model model) {
-
+        
+        Lobby lobby = servidorService.buscarLobbyUnicoLocalParaSingularPlayer();
+        model.addAttribute("lobby", lobby);
+        
         // Obtener categorías activas y desactivadas tambien
         List<Categoria> activas = servidorService.obtenerCategoriasActivas();
         List<Categoria> desactivadas = servidorService.obtenerCategoriasDesactivadas();
@@ -82,16 +85,17 @@ public class LobbyController {
     
     
     @PostMapping("/guardarConfiguracion")
-    public String guardarConfiguracion(@RequestParam int idLobby, @RequestParam int cantRondas){
+    public String guardarConfiguracion(@RequestParam int cantRondas, @RequestParam int duracionPartida, @RequestParam int tiempoDeGracia){
         
-        Lobby lobby = servidorService.buscarLobby(idLobby);
+        Lobby lobby = servidorService.buscarLobbyUnicoLocalParaSingularPlayer(); 
         
         
         lobbyConfiguracionService.modificarCantRondas(lobby, cantRondas);
+        lobbyConfiguracionService.modificarDuracionPartida(lobby, duracionPartida);
+        lobbyConfiguracionService.modificarTiempoGracia(lobby, tiempoDeGracia);
         
         
-        return "redirect:/lobby/ConfiguracionPartida";
-                
+        return "redirect:/lobby/ConfiguracionPartida";        
                 
     }
     

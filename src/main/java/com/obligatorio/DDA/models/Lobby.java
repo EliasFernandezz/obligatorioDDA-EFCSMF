@@ -32,7 +32,10 @@ public class Lobby {
         this.cantRondas = cantRondas;
     }
     
+    public Lobby(){
     
+    
+    }
 
     public int getId() {
         return id;
