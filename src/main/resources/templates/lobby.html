@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <link rel="stylesheet" th:href="@{/lobby.css}" type="text/css"/>
+        <title>Lobby</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <h1 class="titulo">Lobby</h1>
+        <div class="divLobby">
+            <h2>Configuraciones de partida:</h2>
+            <div class="contenedorCategorias">
+
+                <div class="categoriasSeleccionadas">
+                    <h3 class="subTituloCategoriasSeleccionadas">Categorías seleccionadas</h3>
+                    <ul class="listaCategoriasActivas">
+                        <li th:each="categoria : ${activas}" th:class="categoriaActiva">
+                            <a th:href="@{'/lobby/ConfiguracionPartida/alternarEstadoCategoria/' + ${categoria.id}}">
+                                <span th:text="${categoria.nombre}"></span>
+                            </a> 
+
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="categoriasNoSeleccionadas">
+                    <h3 class="subTituloCategoriasSeleccionadas">Categorías no seleccionadas</h3>
+                    <ul class="listaCategoriasNoActivas">
+                        <li th:each="categoria : ${desactivadas}" th:class="categoriaDesactivada">
+                            <a th:href="@{'/lobby/ConfiguracionPartida/alternarEstadoCategoria/' + ${categoria.id}}">
+                                <span th:text="${categoria.nombre}"></span>
+                            </a> 
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <form class="formulario" th:action="@{/lobby/ConfiguracionPartida/guardarConfiguracion}" method="post">
+
+                <div class="columnaConfiguracionNumerica">
+                    <label>Cantidad de rondas:</label>
+                    <input type="number" name="cantRondas"  th:value="${lobby.cantRondas}" min="1" max="5" required>
+                    <label>Duración de partida (En minutos):</label>
+                    <input type="number" name="duracionPartida"  th:value="${lobby.duracionPartida}" min="1" max="3" required>
+                    <label>tiempo de gracia (En segundos):</label>
+                    <input type="number" name="tiempoDeGracia"  th:value="${lobby.tiempoGracia}" min="1" max="10" required>
+                </div>
+                <br>
+                <button type="submit">Guardar configuración</button>
+            </form>
+        </div>
+    </body>
+</html>
+
