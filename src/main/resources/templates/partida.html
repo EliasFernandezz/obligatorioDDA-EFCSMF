@@ -1,49 +1,36 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Partida</title>
 
-    <html>
-        <head>
-            <link rel="stylesheet" th:href="@{/partida.css}" type="text/css"/>
+                <link rel="stylesheet" th:href="@{/partida.css}">
+                    </head>
 
-            <title>partida</title>
-            <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        
-        <body>
-                        <div class="top-stats">
-                            <div class="round-counter">Ronda: 1 de 3</div>
-                            <div class="timer">00:45</div>
+                    <body>
+
+                        <header>
+                            <div class="timer">tiempo restante: <span id="main-timer">--:--</span></div>
+
+                            <div class="tiempoGracia">tiempo de gracia: <span id="grace-timer">--</span></div>
+                        </header>
+
+                        <!-- Aviso flotante de prórroga -->
+                        <div id="prorroga-msg" class="prorroga hidden">
+                            ¡Prórroga de <span id="grace-amount"></span> segundos!
                         </div>
-
-                        <h1 class="titulo">Ingresa palabras con la letra <span class="letra">A</span></h1>
 
                         <div class="contenedor">
                             <form class="formulario">
 
-                                <div class="grupo">
-                                    <label>Mundi</label>
-                                    <input type="text" name="mundi">
-                                </div>
-
-                                <div class="grupo">
-                                    <label>Música</label>
-                                    <input type="text" name="musica">
-                                </div>
-
-                                <div class="grupo">
-                                    <label>Auto</label>
-                                    <input type="text" name="auto">
-                                </div>
-
-                                <div class="grupo">
-                                    <label>Famoso</label>
-                                    <input type="text" name="famoso">
+                                <div class="grupo" th:each="categoria : ${categorias}">
+                                    <label th:text="${categoria.nombre}"></label>
+                                    <input type="text"
+                                           autocomplete="off"
+                                           th:name="${categoria.nombre}"
+                                           th:placeholder="${letra} + '...'">
                                 </div>
 
                                 <div class="botones">
@@ -53,5 +40,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                             </form>
                         </div>
+
+                        <!-- INLINE (Thymeleaf) → define la config en window.gameConfig -->
+                        <script th:inline="javascript">
+                            window.gameConfig = {
+                            partidaMinutos: [[${lobby.duracionPartida}]],
+                                    tiempoGraciaSegundos: [[${lobby.tiempoGracia}]],
+                                    letra: [[${letra}]]   // ← ahora sí, siempre string correcto sin comillas dobles internas
+                            };
+                        </script>
+
+                        <!-- incluir el script externo que implementa toda la lógica -->
+                        <script th:src="@{/partida.js}"></script>
+
                     </body>
-    </html>
+                    </html>

@@ -1,6 +1,7 @@
 /* ======== FONDO GLOBAL ======== */
 html, body {
-    height: 100%;
+    min-height: 100vh;
+    height: auto;
     margin: 0;
     padding: 0;
     background: linear-gradient(135deg, #3e3ac7, #b5b4db);
@@ -130,15 +131,38 @@ body {
     margin-bottom: 15px;
 }
 
-/* Contador y timer */
+/* Contador , timer y tiempo de gracia*/
 .round-counter,
-.timer {
+.timer,
+.tiempoGracia{
     background: #00000066;
     padding: 8px 14px;
+    margin: 5px;
     border-radius: 10px;
     font-weight: bold;
     backdrop-filter: blur(6px);
     white-space: nowrap; /* EVITA QUE EL TEXTO SALTE EN DOS LÍNEAS */
+}
+
+.prorroga {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    background: rgba(255, 215, 0, 0.9);
+    color: black;
+    border-radius: 10px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.prorroga.visible {
+    opacity: 1;
+}
+
+.prorroga.hidden {
+    opacity: 0;
 }
 
 /* ======== RESPONSIVE ======== */
@@ -185,7 +209,8 @@ body {
     }
 
     .round-counter,
-    .timer {
+    .timer,
+    .tiempoGracia{
         width: 100%;
         text-align: center;
     }
