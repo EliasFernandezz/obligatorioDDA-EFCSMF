@@ -29,10 +29,12 @@
 
         // ---------- Actualizadores ----------
         function updateMainTimerDisplay() {
-            if (mainTimer) mainTimer.textContent = formatTimeMMSS(partidaTime);
+            if (mainTimer)
+                mainTimer.textContent = formatTimeMMSS(partidaTime);
         }
         function updateGraceTimerDisplay() {
-            if (graceTimer) graceTimer.textContent = formatTimeMMSS(graceTime);
+            if (graceTimer)
+                graceTimer.textContent = formatTimeMMSS(graceTime);
         }
 
         // ---------- Contadores ----------
@@ -67,14 +69,16 @@
             }
 
             updateGraceTimerDisplay();
-            if (graceInterval) clearInterval(graceInterval);
+            if (graceInterval)
+                clearInterval(graceInterval);
 
             graceInterval = setInterval(() => {
                 graceTime--;
                 updateGraceTimerDisplay();
                 if (graceTime <= 0) {
                     clearInterval(graceInterval);
-                    if (prorrogaMsg) prorrogaMsg.textContent = "Fin del tiempo";
+                    if (prorrogaMsg)
+                        prorrogaMsg.textContent = "Fin del tiempo";
                 }
             }, 1000);
         }
@@ -117,7 +121,8 @@
             input.addEventListener("paste", (e) => {
                 const textoPegado = (e.clipboardData || window.clipboardData).getData('text');
 
-                if (!textoPegado) return;
+                if (!textoPegado)
+                    return;
 
                 const primera = textoPegado.charAt(0).toUpperCase();
 
@@ -128,6 +133,30 @@
             });
 
         });
+
+        // ===========================================================
+        //     HABILITAR BOTÓN SOLO CUANDO TODOS LOS CAMPOS ESTÉN LLENOS
+        // ===========================================================
+        function verificarTodosCompletos() {
+            const boton = document.getElementById('btn-tuttifrutti');
+
+            // Todos los inputs del formulario
+            const todosLlenos = Array.from(inputs).every(input =>
+                input.value.trim() !== ""
+            );
+
+            boton.disabled = !todosLlenos;
+        }
+
+        // Escuchar cambios en todos los inputs
+        inputs.forEach(input => {
+            input.addEventListener('input', verificarTodosCompletos);
+        });
+
+        // Ejecutarlo una vez al principio
+        verificarTodosCompletos();
+
+
 
         // ---------- Iniciar ----------
         startMainCountdown();
