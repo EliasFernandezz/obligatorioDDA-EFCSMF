@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class ControladorMenu {
-    @GetMapping("/")
+    @GetMapping("/menu")
     public String comienzo(Model modelo) {
 
         return "menu";

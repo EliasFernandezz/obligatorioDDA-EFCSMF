@@ -12,8 +12,9 @@
                     <body>
 
                         <header>
+                            
+                            <div class="rondas">ronda <span th:text="${lobby.partidaActual.rondaActual}"></span> de <span th:text="${lobby.cantRondas}"></span></div>
                             <div class="timer">tiempo restante: <span id="main-timer">--:--</span></div>
-
                             <div class="tiempoGracia">tiempo de gracia: <span id="grace-timer">--</span></div>
                         </header>
 
@@ -23,7 +24,9 @@
                         </div>
 
                         <div class="contenedor">
-                            <form class="formulario">
+                            <form class="formulario"
+                                  th:action="@{/finalizarRonda}"
+                                  method="post">
 
                                 <div class="grupo" th:each="categoria : ${categorias}">
                                     <label th:text="${categoria.nombre}"></label>
@@ -34,8 +37,8 @@
                                 </div>
 
                                 <div class="botones">
-                                    <button id="btn-rendirse" type="submit" class="btn rendirse">Rendirse</button>
-                                    <button id="btn-tuttifrutti" type="submit" class="btn tutti" disabled="true">Tutti Frutti</button>
+                                    <button id="btn-rendirse" type="submit" name="accion" value="rendirse" class="btn rendirse">Rendirse</button>
+                                    <button id="btn-tuttifrutti" type="submit" name="accion" value="tutti" class="btn tutti" disabled="true">Tutti Frutti</button>
                                 </div>
 
                             </form>
@@ -46,7 +49,7 @@
                             window.gameConfig = {
                             partidaMinutos: [[${lobby.duracionPartida}]],
                                     tiempoGraciaSegundos: [[${lobby.tiempoGracia}]],
-                                    letra: [[${letra}]]   // ← ahora sí, siempre string correcto sin comillas dobles internas
+                                    letra: [[${letra}]]   // siempre string correcto sin comillas dobles internas
                             };
                         </script>
 

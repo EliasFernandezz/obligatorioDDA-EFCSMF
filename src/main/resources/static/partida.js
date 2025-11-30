@@ -77,8 +77,7 @@
                 updateGraceTimerDisplay();
                 if (graceTime <= 0) {
                     clearInterval(graceInterval);
-                    if (prorrogaMsg)
-                        prorrogaMsg.textContent = "Fin del tiempo";
+                    document.querySelector("form.formulario").submit();
                 }
             }, 1000);
         }

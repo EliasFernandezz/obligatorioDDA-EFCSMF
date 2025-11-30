@@ -123,14 +123,6 @@ body {
     transform: translateY(-3px);
 }
 
-.top-stats {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 15px;
-}
-
 /* Contador , timer y tiempo de gracia*/
 .round-counter,
 .timer,

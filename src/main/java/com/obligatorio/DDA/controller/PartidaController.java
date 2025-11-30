@@ -7,11 +7,16 @@ package com.obligatorio.DDA.controller;
 import com.obligatorio.DDA.Services.ServidorService;
 import com.obligatorio.DDA.models.Categoria;
 import com.obligatorio.DDA.models.Lobby;
+import com.obligatorio.DDA.models.Partida;
+import com.obligatorio.DDA.models.Respuesta;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -34,6 +39,11 @@ public class PartidaController {
 
         // Sortear letra
         char letra = servidorService.sortearLetra();
+        
+        
+
+        // guardar letra en partidaActual
+        lobby.getPartidaActual().setLetraSorteada(letra);
 
         // Enviar datos a la vista
         model.addAttribute("lobby", lobby);
@@ -41,5 +51,47 @@ public class PartidaController {
         model.addAttribute("letra", letra);
 
         return "partida";
+    }
+
+    @PostMapping("/finalizarRonda")
+    public String finalizarRonda(@RequestParam Map<String, String> datosFormulario, Model model) {
+
+        Lobby lobby = servidorService.buscarLobbyUnicoLocalParaSingularPlayer();
+        Partida partida = lobby.getPartidaActual();
+        partida.limpiarHashMap();
+
+        // obtener letra usada esta ronda
+        char letraSorteada = partida.getLetraSorteada();
+
+        // Detectar acción ejecutada (tutti, rendirse o tiempo agotado)
+        String accion = datosFormulario.get("accion"); // puede ser null si fue tiempo agotado
+
+        for (String nombreCategoria : datosFormulario.keySet()) {
+
+            if (nombreCategoria.equals("accion")) {
+                continue;
+            }
+
+            Categoria categoria = servidorService.obtenerCategoriasPredeterminadas()
+                    .stream()
+                    .filter(c -> c.getNombre().equals(nombreCategoria))
+                    .findFirst()
+                    .orElse(null);
+
+            if (categoria != null) {
+
+                String valor = datosFormulario.get(nombreCategoria);
+
+                // si está vacío → reemplazar por la letra
+                if (valor == null || valor.trim().isEmpty()) {
+                    valor = String.valueOf(letraSorteada);
+                }
+
+                Respuesta respuesta = new Respuesta(valor);
+                partida.agregarCategoriaRespuesta(categoria, respuesta);
+            }
+        }
+
+        return "redirect:/validacionRonda";
     }
 }

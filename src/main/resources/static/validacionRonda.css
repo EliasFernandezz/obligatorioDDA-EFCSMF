@@ -1,0 +1,148 @@
+/* ======== FONDO ======== */
+html, body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(180deg, #5e59f0, #9a96ff);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+}
+
+/* ======== TÍTULO ======== */
+.titulo {
+    font-size: 2.3rem;
+    margin-bottom: 25px;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.45);
+}
+
+.titulo .letra {
+    color: #e8e5ff;
+    font-weight: bold;
+}
+
+/* ======== CONTENEDOR ======== */
+.contenedor {
+    width: 90%;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(6px);
+    padding: 30px 35px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+}
+
+/* ======== TABLA ======== */
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+}
+
+.tabla thead {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.tabla th, .tabla td {
+    padding: 14px;
+    text-align: left;
+}
+
+.tabla tbody tr {
+    background: rgba(255, 255, 255, 0.15);
+    transition: background 0.3s ease;
+}
+
+.tabla tbody tr:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.tabla th {
+    color: #fff;
+    font-size: 1.1rem;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+}
+
+/* ===== Puntaje Total ===== */
+.puntaje-final {
+    width: 100%;
+    padding: 18px;
+    margin-bottom: 25px;
+
+    background: rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(10px);
+    border-radius: 14px;
+
+    font-size: 22px;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* ======== BOTONES ======== */
+.acciones {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn {
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    display: inline-block;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.siguiente {
+    background: #5a4af3;
+}
+
+.siguiente:hover {
+    background: #4436d7;
+    transform: translateY(-3px);
+}
+
+.menu {
+    background: #ff4f7a;
+}
+
+.menu:hover {
+    background: #e63a62;
+    transform: translateY(-3px);
+}
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 480px) {
+
+    .titulo {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .contenedor {
+        padding: 20px;
+    }
+
+    .tabla th, .tabla td {
+        padding: 10px;
+    }
+
+    .acciones {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+        font-size: 1rem;
+        padding: 14px;
+    }
+}
