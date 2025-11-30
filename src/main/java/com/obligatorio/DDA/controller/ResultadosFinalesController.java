@@ -42,6 +42,6 @@ public class ResultadosFinalesController {
         Partida partida = lobby.getPartidaActual();
 
         //partida.resetearPuntajes(); // si llevás puntaje acumulado (opcional)
-        return "redirect:/menu";
+        return "redirect:/";
     }
 }

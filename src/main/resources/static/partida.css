@@ -124,9 +124,10 @@ body {
 }
 
 /* Contador , timer y tiempo de gracia*/
-.round-counter,
+.rondas,
 .timer,
 .tiempoGracia{
+    text-align: center;
     background: #00000066;
     padding: 8px 14px;
     margin: 5px;
@@ -193,14 +194,8 @@ body {
         font-size: 1rem;
         padding: 13px;
     }
-    
-    .top-stats {
-        flex-direction: column; /* todos en columna */
-        align-items: stretch;  /* ocupan ancho completo */
-        gap: 0.7rem;
-    }
 
-    .round-counter,
+    .rondas,
     .timer,
     .tiempoGracia{
         width: 100%;
