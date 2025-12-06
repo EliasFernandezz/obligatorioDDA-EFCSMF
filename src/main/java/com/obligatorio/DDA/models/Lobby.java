@@ -20,7 +20,9 @@ public class Lobby {
     private int tiempoGracia; 
     private boolean estadoLobby; 
     private Jugador jugador; 
-    private int cantRondas; 
+    private int cantRondas;
+    
+      private Partida partidaActual;
 
     public Lobby(int id, String codigoInvitacion, int duracionPartida, int tiempoGracia, boolean estadoLobby, Jugador jugador, int cantRondas) {
         this.id = id;
@@ -30,11 +32,13 @@ public class Lobby {
         this.estadoLobby = estadoLobby;
         this.jugador = jugador;
         this.cantRondas = cantRondas;
+        
+        // Inicializamos la partida actual
+        this.partidaActual = new Partida();
     }
     
     public Lobby(){
-    
-    
+    this.partidaActual = new Partida();
     }
 
     public int getId() {
@@ -100,6 +104,17 @@ public class Lobby {
     public void setCantRondas(int cantRondas) {
         this.cantRondas = cantRondas;
     }
+    
+    
+    public Partida getPartidaActual() {
+        return partidaActual;
+    }
+
+    public void setPartidaActual(Partida partidaActual) {
+        this.partidaActual = partidaActual;
+    }
+    
+    
     
     public void unirseAlLobby(Jugador jugador){
     

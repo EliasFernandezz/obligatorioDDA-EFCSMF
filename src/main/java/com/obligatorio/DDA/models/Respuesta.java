@@ -27,4 +27,6 @@ public class Respuesta {
     public Map<Categoria, String> getRespuestas() {
         return respuestasPorCategoria;
     }
+    
+    
 }

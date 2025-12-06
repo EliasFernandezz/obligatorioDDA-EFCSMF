@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Partida</title>
+
+                <link rel="stylesheet" th:href="@{/partida.css}">
+                    </head>
+
+                    <body>
+
+                        <header>
+                            
+                            <div class="rondas">ronda <span th:text="${lobby.partidaActual.rondaActual}"></span> de <span th:text="${lobby.cantRondas}"></span></div>
+                            <div class="timer">tiempo restante: <span id="main-timer">--:--</span></div>
+                            <div class="tiempoGracia">tiempo de gracia: <span id="grace-timer">--</span></div>
+                        </header>
+
+                        <!-- Aviso flotante de prórroga -->
+                        <div id="prorroga-msg" class="prorroga hidden">
+                            ¡Prórroga de <span id="grace-amount"></span> segundos!
+                        </div>
+
+                        <div class="contenedor">
+                            <form class="formulario"
+                                  th:action="@{/finalizarRonda}"
+                                  method="post">
+
+                                <div class="grupo" th:each="categoria : ${categorias}">
+                                    <label th:text="${categoria.nombre}"></label>
+                                    <input type="text"
+                                           autocomplete="off"
+                                           th:name="${categoria.nombre}"
+                                           th:placeholder="${letra} + '...'">
+                                </div>
+
+                                <div class="botones">
+                                    <button id="btn-rendirse" type="submit" name="accion" value="rendirse" class="btn rendirse">Rendirse</button>
+                                    <button id="btn-tuttifrutti" type="submit" name="accion" value="tutti" class="btn tutti" disabled="true">Tutti Frutti</button>
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <!-- INLINE (Thymeleaf) → define la config en window.gameConfig -->
+                        <script th:inline="javascript">
+                            window.gameConfig = {
+                            partidaMinutos: [[${lobby.duracionPartida}]],
+                                    tiempoGraciaSegundos: [[${lobby.tiempoGracia}]],
+                                    letra: [[${letra}]]   // siempre string correcto sin comillas dobles internas
+                            };
+                        </script>
+
+                        <!-- incluir el script externo que implementa toda la lógica -->
+                        <script th:src="@{/partida.js}"></script>
+
+                    </body>
+                    </html>

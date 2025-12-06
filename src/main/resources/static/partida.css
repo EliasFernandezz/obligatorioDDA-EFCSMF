@@ -1,0 +1,204 @@
+/* ======== FONDO GLOBAL ======== */
+html, body {
+    min-height: 100vh;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #3e3ac7, #b5b4db);
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #ffffff;
+}
+
+/* ======== CENTRADO GENERAL ======== */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+}
+
+/* ======== TÍTULO ======== */
+.titulo {
+    font-size: 2.5rem;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+    color: #ffffff;
+}
+
+.titulo .letra {
+    color: #e8e5ff;
+    font-weight: bold;
+}
+
+/* ======== CONTENEDOR PRINCIPAL ======== */
+.contenedor {
+    width: 90%;
+    max-width: 450px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    padding: 30px 35px;
+    border-radius: 15px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+}
+
+/* ======== FORMULARIO ======== */
+.formulario .grupo {
+    margin-bottom: 22px;
+}
+
+.formulario label {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    display: block;
+    color: #ffffff;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+}
+
+.formulario input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    font-size: 1rem;
+    transition: 0.3s ease;
+}
+
+.formulario input::placeholder {
+    color: #e6e6e6;
+}
+
+.formulario input:focus {
+    outline: none;
+    border-color: #d1ceff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.35);
+}
+
+/* ======== BOTONES ======== */
+.botones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.btn {
+    width: 48%;
+    padding: 12px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.rendirse {
+    background-color: #ff4f7a;
+    color: #ffffff;
+}
+
+.rendirse:hover {
+    background-color: #e63a62;
+    transform: translateY(-3px);
+}
+
+.tutti {
+    background-color: #5a4af3;
+    color: white;
+    opacity: 0.6;
+}
+
+.tutti:enabled {
+    opacity: 1;
+}
+
+.tutti:enabled:hover {
+    background-color: #4436d7;
+    transform: translateY(-3px);
+}
+
+/* Contador , timer y tiempo de gracia*/
+.rondas,
+.timer,
+.tiempoGracia{
+    text-align: center;
+    background: #00000066;
+    padding: 8px 14px;
+    margin: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+    backdrop-filter: blur(6px);
+    white-space: nowrap; /* EVITA QUE EL TEXTO SALTE EN DOS LÍNEAS */
+}
+
+.prorroga {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    background: rgba(255, 215, 0, 0.9);
+    color: black;
+    border-radius: 10px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.prorroga.visible {
+    opacity: 1;
+}
+
+.prorroga.hidden {
+    opacity: 0;
+}
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 480px) {
+
+    body {
+        padding: 20px 10px;
+    }
+
+    .titulo {
+        font-size: 1.7rem;
+        margin-bottom: 15px;
+    }
+
+    .contenedor {
+        padding: 18px 18px;
+        border-radius: 12px;
+    }
+
+    label {
+        font-size: 1rem;
+    }
+
+    input {
+        padding: 11px;
+        font-size: 0.95rem;
+    }
+
+    .botones {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn {
+        width: 100%;
+        font-size: 1rem;
+        padding: 13px;
+    }
+
+    .rondas,
+    .timer,
+    .tiempoGracia{
+        width: 100%;
+        text-align: center;
+    }
+}

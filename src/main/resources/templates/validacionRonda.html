@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Validación de Ronda</title>
+
+    <link rel="stylesheet" th:href="@{/validacionRonda.css}">
+</head>
+
+<body>
+
+    <h1 class="titulo">
+        Validación de Ronda — <span class="letra" th:text="${letra}"></span>
+    </h1>
+
+    <div class="contenedor">
+
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th>Respuesta</th>
+                    <th>Juicio de la IA</th>
+                    <th>Puntaje</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="par : ${pares}">
+                    <td th:text="${par.key.nombre}"></td>
+                    <td th:text="${par.value.contenido}"></td>
+                    <td>Aca tendria que ir el juicio de la IA</td>
+                    <td>Y aca el puntaje para esa respuesta especifica</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="puntaje-final">
+            Puntaje total: <span>aca va el puntaje total de la ronda</span>
+        </div>
+
+        <div class="acciones">
+            <a class="btn siguiente" href="/siguienteRonda">Siguiente Ronda</a>
+            <a class="btn menu" href="/menu">Volver al menú</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
