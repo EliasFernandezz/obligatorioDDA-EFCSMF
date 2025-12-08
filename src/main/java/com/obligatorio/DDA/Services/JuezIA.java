@@ -4,24 +4,36 @@
  */
 package com.obligatorio.DDA.Services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.obligatorio.DDA.models.Categoria;
 import com.obligatorio.DDA.models.Jugador;
 import com.obligatorio.DDA.models.Respuesta;
 import com.obligatorio.DDA.models.ResultadoCategoria;
 import com.obligatorio.DDA.models.ResultadoRonda;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author mateo
  */
-public class JuezIA implements IJuez{
- private static final Logger logger = LoggerFactory.getLogger(JuezIA.class);
+@Service
+@Primary
+public class JuezIA implements IJuez {
 
+    @Autowired
+    private IACache iaCache;
+
+    private static final Logger logger = LoggerFactory.getLogger(JuezIA.class);
     private final OpenAIService openAI;
 
     @Value("${game.points.unique:100}")
@@ -30,101 +42,168 @@ public class JuezIA implements IJuez{
     @Value("${game.points.duplicate:50}")
     private int puntajeDuplicado;
 
-    public JuezIA(OpenAIService openAI) {
-        this.openAI = openAI;
-    }
+  public JuezIA(OpenAIService openAI, IACache iaCache) {
+    this.openAI = openAI;
+    this.iaCache = iaCache;
+}
 
     @Override
     public ResultadoRonda evaluar(Map<Jugador, Respuesta> respuestas) {
 
-        ResultadoRonda resultadoRonda = new ResultadoRonda();
+        ResultadoRonda resultado = new ResultadoRonda();
 
-        // ==== Conteo para detectar duplicados ====
-        Map<Categoria, Map<String, Long>> frecuencias = new HashMap<>();
 
-        for (Respuesta r : respuestas.values()) {
-            for (Map.Entry<Categoria, String> e : r.getRespuestas().entrySet()) {
+        List<Map<String, String>> pendientes = new ArrayList<>();
 
-                Categoria cat = e.getKey();
-                String palabra = (e.getValue() == null) ? "" : e.getValue().trim().toUpperCase();
+        for (var entry : respuestas.entrySet()) {
+            for (var resp : entry.getValue().getRespuestas().entrySet()) {
 
-                frecuencias.putIfAbsent(cat, new HashMap<>());
-                frecuencias.get(cat).merge(palabra, 1L, Long::sum);
+                Categoria categoria = resp.getKey();
+                String palabra = resp.getValue().trim();
+
+                // Buscamos en cache
+                String respCache = iaCache.obtener(categoria.getNombre(), palabra);
+
+                if (respCache == null) {
+                    // NO está cacheado, se debe consultar a la IA
+                    Map<String, String> nodo = new HashMap<>();
+                    nodo.put("categoria", categoria.getNombre());
+                    nodo.put("palabra", palabra);
+                    pendientes.add(nodo);
+                }
             }
         }
 
-        // ==== Evaluación con IA ====
+        // ==================================================
+        // 2) Si hay pendientes, construir un solo prompt
+        // ==================================================
+        String respuestaIAjson = null;
+
+        if (!pendientes.isEmpty()) {
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("Validá estas palabras del juego.\n");
+            sb.append("Devolvé SOLO un JSON EXACTO con esta estructura:\n");
+            sb.append("{ \"resultados\": [ { \"categoria\": \"\", \"palabra\": \"\", \"valida\": true/false } ] }\n\n");
+            sb.append("Datos:\n");
+
+            for (var p : pendientes) {
+                sb.append(" - Categoria: ").append(p.get("categoria"))
+                        .append(" → Palabra: ").append(p.get("palabra")).append("\n");
+            }
+
+            String prompt = sb.toString();
+
+            // Llamada única a la IA
+            respuestaIAjson = openAI.consultarIA(prompt);
+
+            if (respuestaIAjson == null || respuestaIAjson.isBlank()) {
+                throw new IllegalStateException("Error: La IA no respondió.");
+            }
+
+            // ============================================
+            // 3) Guardar en cache los resultados devueltos
+            // ============================================
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                Map<String, Object> json = mapper.readValue(respuestaIAjson, Map.class);
+                List<Map<String, Object>> listaIA = (List<Map<String, Object>>) json.get("resultados");
+
+                for (var obj : listaIA) {
+                    String categoria = obj.get("categoria").toString();
+                    String palabra = obj.get("palabra").toString();
+                    String valida = obj.get("valida").toString();
+
+                    // guardar en cache
+                    iaCache.guardar(categoria, palabra, valida);
+                }
+
+            } catch (JsonProcessingException e) {
+                logger.error("Error parseando JSON: " + respuestaIAjson, e);
+            }
+        }
+
+        // ==================================================
+        // 4) Construir lista de resultados completa (cache + IA)
+        // ==================================================
+        List<Map<String, Object>> listaFinal = new ArrayList<>();
+
+        for (var entry : respuestas.entrySet()) {
+            for (var resp : entry.getValue().getRespuestas().entrySet()) {
+
+                Categoria categoria = resp.getKey();
+                String palabra = resp.getValue().trim();
+
+                String validaCache = iaCache.obtener(categoria.getNombre(), palabra);
+
+                Map<String, Object> nodo = new HashMap<>();
+                nodo.put("categoria", categoria.getNombre());
+                nodo.put("palabra", palabra);
+                nodo.put("valida", "true".equalsIgnoreCase(validaCache));
+
+                listaFinal.add(nodo);
+            }
+        }
+
+        // ==================================================
+        // 5) Contar duplicados
+        // ==================================================
+        Map<String, Long> duplicados = new HashMap<>();
+
+        for (var r : listaFinal) {
+            String clave = r.get("categoria") + "#" + r.get("palabra");
+            duplicados.merge(clave, 1L, Long::sum);
+        }
+
+        // ==================================================
+        // 6) Armar ResultadoRonda con puntajes
+        // ==================================================
         for (Map.Entry<Jugador, Respuesta> entry : respuestas.entrySet()) {
 
             Jugador jugador = entry.getKey();
-            Respuesta rtaJugador = entry.getValue();
+            Respuesta res = entry.getValue();
 
-            for (Map.Entry<Categoria, String> respuestaCat : rtaJugador.getRespuestas().entrySet()) {
+            for (var e : res.getRespuestas().entrySet()) {
 
-                Categoria categoria = respuestaCat.getKey();
-                String palabra = respuestaCat.getValue();
-                String palabraNorm = (palabra == null) ? "" : palabra.trim().toUpperCase();
+                Categoria categoria = e.getKey();
+                String palabra = e.getValue().trim();
+
+                Map<String, Object> match = listaFinal.stream()
+                        .filter(m -> m.get("categoria").equals(categoria.getNombre())
+                              && m.get("palabra").equals(palabra))
+                        .findFirst()
+                        .orElse(null);
 
                 ResultadoCategoria rc = new ResultadoCategoria(categoria, palabra);
 
-                // Vacía
-                if (palabra == null || palabra.isBlank()) {
+                boolean esValida = match != null && Boolean.TRUE.equals(match.get("valida"));
+
+                if (!esValida) {
                     rc.setValida(false);
+                    rc.setMotivo("IA indica que NO pertenece");
                     rc.setPuntaje(0);
-                    rc.setMotivo("Vacía");
-                    resultadoRonda.agregarResultado(jugador, rc, 0);
+                    resultado.agregarResultado(jugador, rc, 0);
                     continue;
                 }
 
-                // === Consultar IA ===
-                String prompt = """
-                        Respondé SOLO "SI" o "NO".
-                        ¿La palabra "%s" pertenece a la categoría "%s"?
-                        """.formatted(palabra, categoria.getNombre());
+                long veces = duplicados.get(categoria.getNombre() + "#" + palabra);
 
-                String respuestaIA = openAI.consultarIA(prompt);
-
-                if (respuestaIA == null) {
-                    rc.setValida(false);
-                    rc.setPuntaje(0);
-                    rc.setMotivo("Error consultando IA");
-                    resultadoRonda.agregarResultado(jugador, rc, 0);
-                    continue;
-                }
-
-                respuestaIA = respuestaIA.trim().toUpperCase();
-
-                if (!respuestaIA.contains("SI")) {
-                    rc.setValida(false);
-                    rc.setPuntaje(0);
-                    rc.setMotivo("IA indica que NO pertenece a la categoría");
-                    resultadoRonda.agregarResultado(jugador, rc, 0);
-                    continue;
-                }
-
-                // === Valida por IA ===
-                long apariciones = frecuencias.get(categoria).getOrDefault(palabraNorm, 1L);
-
-                if (apariciones > 1) {
+                if (veces > 1) {
                     rc.setValida(true);
                     rc.setDuplicada(true);
-                    rc.setPuntaje(puntajeDuplicado);
                     rc.setMotivo("Válida pero duplicada");
+                    rc.setPuntaje(puntajeDuplicado);
                 } else {
                     rc.setValida(true);
                     rc.setDuplicada(false);
-                    rc.setPuntaje(puntajeUnico);
                     rc.setMotivo("Válida y única");
+                    rc.setPuntaje(puntajeUnico);
                 }
 
-                logger.info("JuezIA - Jugador={} Categoria={} Palabra={} Valida={} Duplicada={} Puntaje={}",
-                jugador.getNombreJugador(), categoria.getNombre(), palabra,
-                rc.isValida(), rc.isDuplicada(), rc.getPuntaje());
-
-                resultadoRonda.agregarResultado(jugador, rc, rc.getPuntaje());
+                resultado.agregarResultado(jugador, rc, rc.getPuntaje());
             }
         }
 
-        return resultadoRonda;
+        return resultado;
     }
 }

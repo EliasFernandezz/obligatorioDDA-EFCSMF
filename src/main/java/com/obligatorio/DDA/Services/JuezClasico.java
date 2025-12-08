@@ -25,6 +25,7 @@ import java.util.Map;
  *
  * @author mateo
  */
+@Service
 public class JuezClasico implements IJuez {
     
   private static final Logger logger = LoggerFactory.getLogger(JuezClasico.class);

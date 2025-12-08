@@ -6,6 +6,7 @@ package com.obligatorio.DDA.controller;
 
 import com.obligatorio.DDA.Services.ServidorService;
 import com.obligatorio.DDA.models.Categoria;
+import com.obligatorio.DDA.models.Jugador;
 import com.obligatorio.DDA.models.Lobby;
 import com.obligatorio.DDA.models.Partida;
 import com.obligatorio.DDA.models.Respuesta;
@@ -33,6 +34,12 @@ public class PartidaController {
 
         // Obtener lobby actual
         Lobby lobby = servidorService.buscarLobbyUnicoLocalParaSingularPlayer();
+        
+        if (lobby.getJugador() == null) {
+        Jugador jugador = new Jugador();
+        jugador.setNombreJugador("Jugador Local"); // luego lo cambiás por nombre ingresado desde vista
+        lobby.setJugador(jugador);
+}
 
         // Obtener solo categorías activas
         List<Categoria> categorias = servidorService.obtenerCategoriasActivas();

@@ -19,6 +19,9 @@ public class Jugador {
         this.nombreJugador = nombreJugador;
         this.puntaje = puntaje;
     }
+    
+     public Jugador() {
+    }
 
     public int getId() {
         return id;

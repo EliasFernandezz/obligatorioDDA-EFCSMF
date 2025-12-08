@@ -17,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 public class OpenAIService {
+
     private final WebClient webClient;
 
     public OpenAIService(@Value("${openai.api.key}") String apiKey) {
@@ -31,25 +32,19 @@ public class OpenAIService {
     public String consultarIA(String prompt) {
 
         Map<String, Object> requestBody = Map.of(
-                "model", "gpt-4o-mini",
-                "messages", new Object[]{
-                        Map.of("role", "user", "content", prompt)
-                }
+                "model", "gpt-4.1-mini",
+                "input", prompt
         );
 
         Map response = webClient.post()
-                .uri("/chat/completions")
-                .contentType(MediaType.APPLICATION_JSON)
+                .uri("/responses")
                 .bodyValue(requestBody)
                 .retrieve()
                 .bodyToMono(Map.class)
                 .block();
 
-        Map choice = (Map) ((java.util.List) response.get("choices")).get(0);
-        Map message = (Map) choice.get("message");
+        Map output = (Map) ((java.util.List) response.get("output")).get(0);
 
-        return (String) message.get("content");
+        return (String) output.get("text");
     }
-    
-    
 }
