@@ -10,16 +10,15 @@
 
                 <body>
 
-                    <h1 class="titulo">Resultados Finales</h1>
+                        <h1 class="titulo">Resultados Finales</h1>
 
-                    <div class="contenedor">
-                        <p class="puntaje-final">
-                            Puntaje total acumulado:
-                            <span> Puntaje final de la partida</span>
-                        </p>
-
-                        <a class="btn menu" href="/volverAlMenuDesdeFinal">Volver al menú</a>
-                    </div>
+                        <div class="contenedor">
+                            <p class="puntaje-final">
+                                Puntaje total acumulado:
+                            <span th:text="${puntajeFinal}"></span>
+                            </p>
+                            <a class="btn menu" href="/volverAlMenuDesdeFinal">Volver al menú</a>
+                        </div>
 
                 </body>
-                </html>
+</html>

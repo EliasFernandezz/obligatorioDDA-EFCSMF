@@ -16,14 +16,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ControladorMenu {
     @GetMapping("/")
     public String comienzo(Model modelo) {
-
         return "menu";
     }
-    
+
+    @GetMapping("/menu")
+    public String irMenu() {
+        return "menu";
+    }
+
     @GetMapping("/lobby/menu")
-    public String mostrarLobby(){
-    
-        return "lobby"; 
-    
+    public String mostrarLobby() {
+        return "lobby";
     }
 }

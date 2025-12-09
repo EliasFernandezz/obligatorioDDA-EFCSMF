@@ -98,7 +98,8 @@ public class JuezIA implements IJuez {
             respuestaIAjson = openAI.consultarIA(prompt);
 
             if (respuestaIAjson == null || respuestaIAjson.isBlank()) {
-                throw new IllegalStateException("Error: La IA no respondió.");
+                    resultado.setMensajeError("El juez de IA no pudo ser llamado. Las respuestas no pudieron ser validadas.");
+                    return resultado;
             }
 
             // ============================================

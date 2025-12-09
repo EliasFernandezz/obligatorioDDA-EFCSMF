@@ -16,6 +16,7 @@ public class ResultadoRonda {
     
     private final Map<Jugador, Map<ResultadoCategoria, Integer>> resultados = new HashMap<>();
     private final Map<Jugador, Integer> puntajeTotal = new HashMap<>();
+    private String mensajeError;
 
     public void agregarResultado(Jugador jugador, ResultadoCategoria resultado, int puntaje) {
         resultados.computeIfAbsent(jugador, k -> new HashMap<>()).put(resultado, puntaje);
@@ -28,5 +29,13 @@ public class ResultadoRonda {
 
     public Map<Jugador, Map<ResultadoCategoria, Integer>> getResultados() {
         return resultados;
+    }
+    
+    public String getMensajeError() {
+        return mensajeError;
+    }
+
+    public void setMensajeError(String mensajeError) {
+        this.mensajeError = mensajeError;
     }
 }

@@ -18,7 +18,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 public class OpenAIService {
 
-    private final WebClient webClient;
+     private final WebClient webClient;
 
     public OpenAIService(@Value("${openai.api.key}") String apiKey) {
 
@@ -36,15 +36,36 @@ public class OpenAIService {
                 "input", prompt
         );
 
-        Map response = webClient.post()
-                .uri("/responses")
-                .bodyValue(requestBody)
-                .retrieve()
-                .bodyToMono(Map.class)
-                .block();
+        try {
+            Map response = webClient.post()
+                    .uri("/responses")
+                    .bodyValue(requestBody)
+                    .retrieve()
+                    .onStatus(
+                            status -> status.is4xxClientError() || status.is5xxServerError(),
+                            clientResponse -> clientResponse.bodyToMono(String.class)
+                                    .map(body -> new RuntimeException("Error IA: " + body))
+                    )
+                    .bodyToMono(Map.class)
+                    .block();
 
-        Map output = (Map) ((java.util.List) response.get("output")).get(0);
+            if (response == null || !response.containsKey("output")) {
+                return null; // <- devolución segura
+            }
 
-        return (String) output.get("text");
+            java.util.List outputList = (java.util.List) response.get("output");
+
+            if (outputList.isEmpty()) {
+                return null;
+            }
+
+            Map output = (Map) outputList.get(0);
+
+            return (String) output.get("text");
+
+        } catch (Exception e) {
+            System.out.println("Error llamando a OpenAI: " + e.getMessage());
+            return null; // <- NUNCA CRASHEA
+        }
     }
 }

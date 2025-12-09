@@ -4,7 +4,10 @@
  */
 package com.obligatorio.DDA.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -17,11 +20,12 @@ public class Partida {
 
     private char letraSorteada;
     private int rondaActual;
-    private int puntajeAcumulado;
+    private int puntajeAcumulado; // ← PUNTAJE TOTAL ACUMULADO
 
     public Partida() {
         this.categoriasRespuestas = new HashMap<>();
         this.rondaActual = 1;
+        this.puntajeAcumulado = 0;
     }
 
     public HashMap<Categoria, String> getCategoriasRespuestas() {
@@ -32,7 +36,6 @@ public class Partida {
         this.categoriasRespuestas = categoriasRespuestas;
     }
 
-    // nuevo método adaptado
     public void agregarCategoriaYPalabra(Categoria categoria, String palabra) {
         this.categoriasRespuestas.put(categoria, palabra);
     }
@@ -56,12 +59,27 @@ public class Partida {
     public void setRondaActual(int rondaActual) {
         this.rondaActual = rondaActual;
     }
-    
+
     public Respuesta getRespuestaJugador() {
         return respuestaJugador;
     }
 
     public void setRespuestaJugador(Respuesta respuestaJugador) {
         this.respuestaJugador = respuestaJugador;
+    }
+
+    // -------------------------------
+    //   NUEVA LÓGICA ACUMULADORA
+    // -------------------------------
+    public int getPuntajeAcumulado() {
+        return puntajeAcumulado;
+    }
+
+    public void sumarPuntaje(int puntos) {
+        this.puntajeAcumulado += puntos;
+    }
+
+    public void resetearPuntajes() {
+        this.puntajeAcumulado = 0;
     }
 }

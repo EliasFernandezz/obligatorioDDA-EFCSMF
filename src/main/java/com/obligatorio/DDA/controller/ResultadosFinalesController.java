@@ -21,18 +21,14 @@ public class ResultadosFinalesController {
     @GetMapping("/resultadosFinales")
     public String mostrarResultadosFinales(Model model) {
 
-        // obtener lobby local del jugador (tu método actual)
         Lobby lobby = servidorService.buscarLobbyUnicoLocalParaSingularPlayer();
         Partida partida = lobby.getPartidaActual();
 
-        // obtener jugadores de la partida
-        //List<Jugador> jugadores = lobby.getJugadores();  COMENTADO POR SI SE LLEGA A USAR DESPUES
-        // si tenés un método que calcula puntajes finales por jugador:
-        //Map<Jugador, Integer> puntajesFinales = partida.calcularPuntajesFinales();  COMENTADO POR SI SE LLEGA A USAR DESPUES
-        // agregar datos al modelo
-        //model.addAttribute("jugadores", jugadores);
-        //model.addAttribute("puntajesFinales", puntajesFinales);
-        return "resultadosFinales"; // nombre de la template
+        int puntajeFinal = partida.getPuntajeAcumulado();
+
+        model.addAttribute("puntajeFinal", puntajeFinal);
+
+        return "resultadosFinales";
     }
 
     @GetMapping("/volverAlMenuDesdeFinal")
@@ -41,7 +37,8 @@ public class ResultadosFinalesController {
         Lobby lobby = servidorService.buscarLobbyUnicoLocalParaSingularPlayer();
         Partida partida = lobby.getPartidaActual();
 
-        //partida.resetearPuntajes(); // si llevás puntaje acumulado (opcional)
+        partida.resetearPuntajes(); // opcional
+
         return "redirect:/";
     }
 }

@@ -1,58 +1,45 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Validación de Ronda</title>
-
     <link rel="stylesheet" th:href="@{/validacionRonda.css}">
 </head>
 
-<body>
-
-<h1 class="titulo">
-    Validación de Ronda
-</h1>
-
-<div class="contenedor">
-
-    <table class="tabla">
-        <thead>
-        <tr>
-            <th>Categoría</th>
-            <th>Respuesta</th>
-            <th>Juicio del Juez</th>
-            <th>Puntaje</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <tr th:each="entry : ${resultadosJugador}">
-            <!-- entry.key es ResultadoCategoria -->
-            <!-- entry.value es el puntaje -->
-
-            <td th:text="${entry.key.categoria.nombre}"></td>
-            <td th:text="${entry.key.palabra}"></td>
-
-            <!-- Motivo (validación de IA o clásico) -->
-            <td th:text="${entry.key.motivo}"></td>
-
-            <td th:text="${entry.value}"></td>
-        </tr>
-        </tbody>
-    </table>
-
-    <div class="puntaje-final">
-        Puntaje total:
-        <span th:text="${puntajeTotal}"></span>
-    </div>
-
-    <div class="acciones">
-        <a class="btn siguiente" href="/siguienteRonda">Siguiente Ronda</a>
-        <a class="btn menu" href="/menu">Volver al menú</a>
-    </div>
-
-</div>
-
+<body> <h1 class="titulo"> Validación de Ronda </h1>
+    <div class="contenedor">
+        <table class="tabla">
+            <thead> 
+            <tr> 
+                <th>Categoría</th>
+                <th>Respuesta</th> 
+                <th>Juicio del Juez</th> 
+                <th>Puntaje</th> 
+                </tr> 
+                </thead> 
+            
+                <tbody> 
+                <tr th:each="entry : ${resultadosJugador}"> 
+                    <!-- entry.key es ResultadoCategoria --> 
+                    <!-- entry.value es el puntaje --> 
+                    
+                    <td th:text="${entry.key.categoria.nombre}"></td> 
+                    <td th:text="${entry.key.palabra}"></td> 
+                    <!-- Motivo (validación de IA o clásico) --> 
+                    <td th:text="${entry.key.motivo}"></td> 
+                    <td th:text="${entry.value}"></td> </tr> </tbody> 
+        </table> 
+        
+                <div class="puntaje-final">
+                    Puntaje total: 
+                    <span th:text="${puntajeTotal}">
+                    </span> 
+                </div> 
+                <div class="acciones"> 
+                    <a class="btn siguiente" href="/siguienteRonda">Siguiente Ronda</a>
+                    <a class="btn menu" href="/menu">Volver al menú</a> </div> 
+                </div> 
 </body>
 </html>
