@@ -4,6 +4,7 @@
  */
 package com.obligatorio.DDA.Services;
 
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -18,9 +19,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 public class OpenAIService {
 
-     private final WebClient webClient;
+    private final WebClient webClient;
 
-    public OpenAIService(@Value("${openai.api.key}") String apiKey) {
+    public OpenAIService(@Value("${OPENAI_API_KEY}") String apiKey) {
 
         this.webClient = WebClient.builder()
                 .baseUrl("https://api.openai.com/v1")
@@ -41,31 +42,32 @@ public class OpenAIService {
                     .uri("/responses")
                     .bodyValue(requestBody)
                     .retrieve()
-                    .onStatus(
-                            status -> status.is4xxClientError() || status.is5xxServerError(),
-                            clientResponse -> clientResponse.bodyToMono(String.class)
-                                    .map(body -> new RuntimeException("Error IA: " + body))
-                    )
                     .bodyToMono(Map.class)
                     .block();
 
             if (response == null || !response.containsKey("output")) {
-                return null; // <- devolución segura
-            }
-
-            java.util.List outputList = (java.util.List) response.get("output");
-
-            if (outputList.isEmpty()) {
+                System.out.println("IA sin output");
                 return null;
             }
 
-            Map output = (Map) outputList.get(0);
+            List<Map<String, Object>> output = (List<Map<String, Object>>) response.get("output");
 
-            return (String) output.get("text");
+            Map<String, Object> first = output.get(0);
+            List<Map<String, Object>> content =
+                    (List<Map<String, Object>>) first.get("content");
+
+            Map<String, Object> textNode = content.get(0);
+            String texto = (String) textNode.get("text");
+
+            System.out.println("Respuesta del Juez:");
+            System.out.println(texto);
+
+            return texto;
 
         } catch (Exception e) {
-            System.out.println("Error llamando a OpenAI: " + e.getMessage());
-            return null; // <- NUNCA CRASHEA
+            System.out.println("Error llamando a OpenAI:");
+            e.printStackTrace();
+            return null;
         }
     }
 }
