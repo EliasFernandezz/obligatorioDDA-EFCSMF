@@ -46,9 +46,11 @@ Proyecto académico grupal (obligatorio de **Diseño y Desarrollo de Aplicacione
 
 ## Mi aporte
 
-- **[Integré la API de OpenAI para validar las respuestas con IA]**
-- **[Desarrollé ...]**
-- **[Diseñé ...]**
+- Desarrollé la lógica de la partida: contador de tiempo y tiempo de gracia, letra sorteada obligatoria en cada campo y habilitación del botón Tutti Frutti al completar todos los campos.
+- Implementé la gestión de rondas, con el conteo de la ronda actual según la configuración del lobby.
+- Desarrollé los controladores y las vistas de la partida, la validación de ronda y los resultados finales.
+- Diseñé los estilos (CSS) del lobby, la partida y los resultados.
+- Resolví un error de configuración del proyecto que impedía ejecutarlo.
 
 ## Cómo ejecutarlo
 
@@ -160,9 +162,11 @@ Group academic project (**Application Design and Development** and **Software En
 
 ## My Contribution
 
-- **[Integrated the OpenAI API to validate answers with AI]**
-- **[Built ...]**
-- **[Designed ...]**
+- Developed the game logic: countdown timer and grace period, a mandatory random starting letter for every field, and enabling the Tutti Frutti button once all fields are filled.
+- Implemented round management, tracking the current round based on the lobby configuration.
+- Built the controllers and views for the game screen, round validation and final results.
+- Designed the styles (CSS) for the lobby, game and results screens.
+- Fixed a project configuration error that prevented the app from running.
 
 ## Getting Started
 
